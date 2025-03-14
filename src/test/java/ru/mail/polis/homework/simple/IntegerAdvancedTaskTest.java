@@ -29,7 +29,6 @@ public class IntegerAdvancedTaskTest {
         assertEquals(46, IntegerAdvancedTask.snake(100, 10, 200, 8, 100, 23333));
         assertEquals(13, IntegerAdvancedTask.snake(10, 3,2, 4, 32, 100));
         assertEquals(1, IntegerAdvancedTask.snake(5, 2, 39, 4, 2, 23));
-
     }
 
     @Test

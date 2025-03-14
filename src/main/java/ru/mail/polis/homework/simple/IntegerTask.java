@@ -14,7 +14,9 @@ public class IntegerTask {
      * Пример: (5) -> 15
      */
     public static int sum(int n) {
-        return 0;
+        int curr = 0;
+        for (int i = 1; i <= n; i++) curr += i;
+        return curr;
     }
 
     /**
@@ -24,7 +26,17 @@ public class IntegerTask {
      * Пример: (10, 3, 2) -> 8
      */
     public static int snake(int height, int top, int bottom) {
-        return 0;
+        if(top-height < 0 && (  top-bottom <= 0)){
+            return Integer.MAX_VALUE;
+        }
+        int ans = 0, curr = 0;
+        while(true){
+            curr += top;
+            ++ans;
+            if(curr >= height){break;}
+            curr -= bottom;
+        }
+        return ans;
     }
 
     /**
@@ -32,7 +44,13 @@ public class IntegerTask {
      * Пример: (454355, 3) -> 3
      */
     public static int kDecimal(int n, int order) {
-        return 0;
+        int decimal = 1, curr = n%10;
+        while(decimal != order){
+            decimal++;
+            n /= 10;
+            curr = n%10;
+        }
+        return (curr < 0) ? curr*(-1) : curr;
     }
 
 
@@ -40,7 +58,20 @@ public class IntegerTask {
      * Выведите факториал от числа n
      * Пример: (5) -> 120
      */
+    static long[] fact = new long[21];
+    static {
+        fact[0] = 1;
+        fact[1] = 1;
+    }
+
     public static long factorial(byte n) {
-        return 0;
+        if (n == 0 || n == 1) return 1;
+
+        if (fact[n] != 0) {
+            return fact[n];
+        }
+
+        fact[n] = n * factorial((byte) (n - 1));
+        return fact[n];
     }
 }

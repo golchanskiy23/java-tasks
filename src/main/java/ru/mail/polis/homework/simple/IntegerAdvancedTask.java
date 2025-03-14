@@ -18,7 +18,10 @@ public class IntegerAdvancedTask {
      * Пример: (1, 2, 3) -> 7
      */
     public static long progression(int a, double q, int n) {
-        return 0;
+        if(q == 1) {
+            return (long)a*n;
+        }
+        return a*(1-(long)Math.pow(q,n))/(long)(1-q);
     }
 
     /**
@@ -29,9 +32,25 @@ public class IntegerAdvancedTask {
      * Если она этого никогда не сможет сделать, Верните число Integer.MAX_VALUE;
      * Пример: (10, 3, 5, 5, 20, 11) -> 2
      */
-    public static int snake(int up, int right, int down, int left, int grassX, int grassY) {
-        return 0;
+    public static int func(int up, int down, int target){
+        int ansX = 0;
+        if(up-target < 0 && (up-down <= 0)){
+            return Integer.MAX_VALUE;
+        }
+        int curr = 0;
+        while(true){
+            curr += up;
+            ++ansX;
+            if(curr >= target){break;}
+            curr -= down;
+        }
+        return ansX;
     }
+
+    public static int snake(int up, int right, int down, int left, int grassX, int grassY) {
+        return Math.min(func(up, down, grassY), func(right, left, grassX));
+    }
+
 
     /**
      * Дано число n в 10-ном формате и номер разряда order.
@@ -40,8 +59,17 @@ public class IntegerAdvancedTask {
      * Пример: (454355, 2) -> D
      */
     public static char kDecimal(int n, int order) {
-        return 0;
+        int curr = 1;
+        char t = ' ';
+        char[] arr = "0123456789ABCDEF".toCharArray();
+        while(curr <= order){
+            t = arr[n%16];
+            n /= 16;
+            curr++;
+        }
+        return t;
     }
+
 
     /**
      * Дано число в 10-ном формате.
@@ -51,7 +79,18 @@ public class IntegerAdvancedTask {
      * (6726455) -> 2
      */
     public static byte minNumber(long a) {
-        return 0;
+        byte minPosition = -1, position = 1, minDigit = 16;
+
+        while (a > 0) {
+            byte currentDigit = (byte) (a & 0xF);
+            if (currentDigit < minDigit) {
+                minDigit = currentDigit;
+                minPosition = position;
+            }
+            a >>= 4;
+            position++;
+        }
+        return minPosition;
     }
 
 }
