@@ -14,18 +14,19 @@ public class SimpleFunction {
      * Функция должна походить на {@link java.util.function.BiFunction}
      * 1 балл
      */
-    interface TerFunction {
-
+    @FunctionalInterface
+    interface TerFunction<T, U, V, R> {
+        R apply(T t, U u, V v);
     }
 
     /**
      * Реализуйте каррирование для функции от трех аргументов.
-     * Вам нужно правильно определить тип возращаемого значения и реализовать метод.
+     * Вам нужно правильно определить тип возвращаемого значения и реализовать метод.
      * Не забывайте использовать дженерики.
      * 2 балла
      */
-    static Object curring(TerFunction terFunction) {
-        return null;
+    static <T, U, V, R> Function<T, Function<U, Function<V, R>>> curring(TerFunction<T, U, V, R> terFunction) {
+        return t -> u -> v -> terFunction.apply(t, u, v);
     }
 
     /**
@@ -38,9 +39,10 @@ public class SimpleFunction {
     static Function<String, Double> doubleStringEquation(double a1, double b1, double c1,
                                                          double a2, double b2, double c2,
                                                          Function<String, Double> g) {
-        return null;
+        Function<Double, Double> square1 = x -> a1 * x * x + b1 * x + c1;
+        Function<Double, Double> square2 = x -> a2 * x * x + b2 * x + c2;
+        return str -> square2.apply(square1.apply(g.apply(str)));
     }
-
 
     /**
      * Превращает список унарных операторов в один унарный оператор для списка чисел. Получившийся оператор
@@ -49,8 +51,15 @@ public class SimpleFunction {
      * 4 балла (доп задание)
      */
     public static final Function<List<IntUnaryOperator>, UnaryOperator<List<Integer>>> multifunctionalMapper =
-            a -> null;
-
+            functions -> numbers -> {
+                List<Integer> result = new java.util.ArrayList<>();
+                for (Integer number : numbers) {
+                    for (IntUnaryOperator function : functions) {
+                        result.add(function.applyAsInt(number));
+                    }
+                }
+                return result;
+            };
 
     /**
      * Написать функцию, которая принимает начальное значение и преобразователь двух чисел в одно, возвращает функцию,
@@ -61,5 +70,12 @@ public class SimpleFunction {
      * reduceIntOperator.apply(начальное значение, (x,y) -> ...).apply(2, 10) = 54
      * 2 балла
      */
-    public static final BiFunction<Integer, IntBinaryOperator, IntBinaryOperator> reduceIntOperator = (a, b) -> null;
+    public static final BiFunction<Integer, IntBinaryOperator, IntBinaryOperator> reduceIntOperator =
+            (initialValue, operator) -> (start, end) -> {
+                int result = initialValue;
+                for (int i = start; i <= end; i++) {
+                    result = operator.applyAsInt(result, i);
+                }
+                return result;
+            };
 }
